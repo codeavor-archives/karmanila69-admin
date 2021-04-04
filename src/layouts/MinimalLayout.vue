@@ -15,7 +15,7 @@
         label="Notifications"
         color="amber"
         />
-        <q-btn dense flat round icon="message"/>
+        <q-btn dense flat round icon="message" @click="sendTestMessage"/>
         <q-btn dense flat round icon="notifications"/>
         <q-btn-dropdown dense flat :label="userEmail" icon="account_circle" split>
             <q-list class="text-grey-8">
@@ -84,6 +84,7 @@
     }
 </style>
 <script>
+import axios from 'axios'
 export default {
     data () {
           return {
@@ -130,6 +131,25 @@ export default {
               this.$firebase.auth().signOut()
               this.$router.push('/login')
             })
+        },
+        sendTestMessage(){
+           let header= {
+                  'Access-Control-Allow-Origin': '*',
+                }
+          let message = 'You have a balance of P10000.00.'
+          let number = '09654767706'
+
+          var data = 'number=' + number + '&' + 'message=' + message
+          console.log(data)
+          // https://maleficent-sms.000webhostapp.com/index.php
+          axios.post('https://smsapisender.000webhostapp.com/index.php', data)
+          .then(response => {
+          console.log(response)
+          })
+          .catch((error) => {
+          console.log(error.response)
+          })
+
         },
       subscribeGetToken() {
 
